@@ -5,20 +5,20 @@
 #include <algorithm>
 #include "world.h"
 #include "player.h"
-
+ 
 class GameLoop {
 public:
     GameLoop(World& world, Player& player);
     void run();
-
+ 
 private:
     World&  world;
     Player& player;
     bool playing;
-
+ 
     void printSituation() const;
     void showHelp() const;
-
+ 
     // Command handlers
     bool cmdGo(const std::string& direction);
     bool cmdPickup(const std::string& itemName);
@@ -33,7 +33,8 @@ private:
     bool cmdTalk(const std::string& npcName);
     bool cmdLook() const;
     bool cmdMe() const;
-
+ 
     void checkWorldProgression();
 };
 #endif // GAMELOOP_H
+ 

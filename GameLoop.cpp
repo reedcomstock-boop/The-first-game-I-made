@@ -13,6 +13,7 @@ static std::string toLower(std::string s) {
     std::transform(s.begin(), s.end(), s.begin(), ::tolower);
     return s;
 }
+
 void GameLoop::run() {
     printSituation();
 

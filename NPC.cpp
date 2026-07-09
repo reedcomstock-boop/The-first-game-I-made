@@ -95,9 +95,9 @@ void Helper::talk(Player&player) {
         if (dlg == 0 && lvl == 0) {
             std::cout << "\nNewt: 'Hiya! You must be the new guy! I'm Newt, welcome to the Glade.'\n";
             std::cout << "A. Yeah.. what is this place?\n";
-            std::cout << "B. It is nice to meet you — what is with the walls?\n: ";
+            std::cout << "B. It is nice to meet you — what is with these giant walls?\n: ";
             std::getline(std::cin, choice);
-            std::cout << "\nNewt: 'You see the walls surrounding us?...'\n";
+            std::cout << "\nNewt: 'You see the walls surrounding us? We are trapped in the middle of a maze full of monsters and those walls keep them away from us.'\n";
             setDialogueProgress(1);
         } 
         else if (dlg == 1 && lvl == 0) {
