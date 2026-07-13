@@ -97,30 +97,57 @@ void Helper::talk(Player&player) {
             std::cout << "A. Yeah.. what is this place?\n";
             std::cout << "B. It is nice to meet you — what is with these giant walls?\n: ";
             std::getline(std::cin, choice);
-            std::cout << "\nNewt: 'You see the walls surrounding us? We are trapped in the middle of a maze full of monsters and those walls keep them away from us.'\n";
-            setDialogueProgress(1);
-        } 
+            if (toLower(choice) == "a"){
+                std::cout << "\nNewt: 'You see the walls surrounding us? Well those make up a maze that moves every few hours. Me and some of the others here have been here for over 3 years, every month a new person is sent up the hatch you came out of earlier, along with supplies.'\n";
+            }
+            else if (toLower(choice) == "b"){
+                std::cout << "\nNewt: 'Oh you noticed the walls- Well those make up a maze that moves every few hours. Me and some of the others here have been here for over 3 years, every month a new person is sent up the hatch you came out of earlier, along with supplies.'\n";
+            } 
+            while (dlg < 1){
+                std::cout << "\nA. so the glade is like a prison?\n";
+                std::cout << "B. have you guys tried to explore the maze?\n";
+                std::cout << "C. why do you stay here?\n";       
+                std::getline(std::cin, choice);
+                if (toLower(choice) == "a"){
+                    std::cout << "\nNewt: 'not a prison, a safe zone. There are monsters that hunt anyone who enters the maze.'\n";
+                }
+                else if (toLower(choice) == "b"){
+                    std::cout<< "\nNewt:'we have a group of people called the runners, their job is to explore the maze and map it so we can escape' he says pointing over to a runner.";
+                    setDialogueProgress(1);
+                    dlg = getDialogueProgress();   // <-- re-sync the local copy so the loop can exit
+
+                }
+                else if (toLower(choice)=="c"){
+                    std::cout<< "'There are monsters that hunt anyone who enters the maze, their venom has driven many of us insane.\n";
+                }
+            }
+                
+            }
+        
         else if (dlg == 1 && lvl == 0) {
             std::cout << "\nNewt: 'Hello friend! What can I do you for?'\n";
-            std::cout << "A. I want to know more about the runners\n";
+            std::cout << "\nA. I want to know more about the runners\n";
             std::cout << "B. What kind of monsters were you saying live in the maze?\n: ";
             std::getline(std::cin, choice);
             if (toLower(choice) == "a") {
                 std::cout << "\nNewt: 'The runners go into the maze and map it while trying not to get caught by Grievers. I make their gear in my shop.'\n";
-                std::cout << "A. Can I be a runner?\n";
+                std::cout << "\nA. Can I be a runner?\n";
                 std::cout << "B. What happens when you get hit with the venom?\n: ";
                 std::getline(std::cin, choice);
                 if (toLower(choice) == "a") {
-                    std::cout << "\nNewt: 'I don't see why not — you'll need gear though. Come see me at the shed and I'll show you around the crafting shop.' He points south.\n";
+                    std::cout << "\nNewt: 'I don't see why not — you'll need gear though. Come see me at the shed later and I'll show you around the crafting shop.' He points south.\n";
                     setDialogueProgress(2);
-                    player.setExp(100.0); // triggers level 1
+                    dlg = getDialogueProgress();   // <-- re-sync the local copy so the loop can exit
                     //printSituation();
                 } 
-                else {
+                else if(toLower(choice) == "b"){
                     std::cout << "\nNewt: 'I can only tell you that if you are a runner.' Newt laughs.\n";
                 }
+                std::cout << "\nNewt: 'If you want to know more you should go chat with Minho- he can help you train to me stong enough to fight the monsters.. or at least run away from them. You can find him over west from the cage you came out of.'\n";
+                player.setExp(100.0); // triggers level 1
+
             } 
-            else {
+            else if(toLower(choice) == "b"){
                 std::cout << "\nNewt: 'We call them Grievers. No one has been attacked and lived to tell about it. We can't let any runner who gets stung back into the Glade.'\n";
             }
 
@@ -130,6 +157,8 @@ void Helper::talk(Player&player) {
             if (roomName == "The Shed" && dlg == 2) {
                 std::cout << "\nNewt: 'Hey friend! You still want to be a runner? Let's make you some gear! You'll need to find materials around the glade — metal, rocks, and sticks work best.'\n";
                 setDialogueProgress(3);
+                dlg = getDialogueProgress();   // <-- re-sync the local copy so the loop can exit
+
             } 
             else if (roomName == "The Shed" && dlg == 3) {
                 std::cout << "\nNewt: 'Did you get those materials?'\n";
@@ -142,6 +171,8 @@ void Helper::talk(Player&player) {
                     std::cout << "  Leather + Cloth = Leather Armor\n";
                     std::cout << "Type: craft <item name>\n";
                     setDialogueProgress(4);
+                    dlg = getDialogueProgress();   // <-- re-sync the local copy so the loop can exit
+
                 } 
                 else {
                     std::cout << "\nNewt: 'Alrighty, come back when you do.'\n";
@@ -171,7 +202,7 @@ void Helper::talk(Player&player) {
             }
         }
     }
-    
+
     else if (toLower(n) == "minho") {
         std::cout << "\nMinho: 'Ready to train?'\n";
     }
@@ -237,7 +268,7 @@ void Medic::talk(Player& player) {
                     std::cout << "\nPete: 'Ok, I hope you feel better and can continue to be a runner.'\n";
                 }
             }
-        } 
+        }
         else {
             std::cout << "\nPete: 'Hello, welcome to the infirmary, how can I help you?'\n";
             std::cout << "A. I went into the maze and got hurt\n";

@@ -1,7 +1,7 @@
 CFLAGS = -Wall -Wextra -pedantic -Werror
 
-Game: main.o player.o updater.o NPC.o rooms.o items.o world.o GameLoop.o
-	g++ -o Game main.o player.o NPC.o rooms.o items.o world.o GameLoop.o updater.o $(CFLAGS)
+Game: main.o player.o updater.o NPC.o rooms.o items.o world.o GameLoop.o Save.o
+	g++ -o Game main.o player.o NPC.o rooms.o items.o world.o GameLoop.o updater.o Save.o $(CFLAGS)
 
 main.o: main.cpp
 	g++ -c main.cpp $(CFLAGS)
@@ -27,5 +27,8 @@ updater.o: updater.cpp
 GameLoop.o: GameLoop.cpp
 	g++ -c GameLoop.cpp $(CFLAGS)
 
+Save.o: save.cpp
+	g++ -c save.cpp $(CFLAGS)
+
 clean:
-	rm -f Game main.o player.o NPC.o rooms.o items.o world.o gameLoop.o updater.o
+	rm -f Game main.o player.o NPC.o rooms.o items.o world.o gameLoop.o updater.o Save.o

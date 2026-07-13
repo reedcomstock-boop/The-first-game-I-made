@@ -93,7 +93,7 @@ double Player::getExpToNextLevel(){
 }
 void Player::setExp(double amt){
     exp += amt;
-    std::cout << "You gained " << amt << " experience points!\n";
+    std::cout << "\n You gained " << amt << " experience points!\n";
 }
 Room* Player::goDirection(const std::string& direction) {
     if (location) {
@@ -231,6 +231,14 @@ void Player::setMagic(bool hasMagic) {
 }
 bool Player::hasMagic() const {
     return magic;
+}
+void Player::setStats(const Stats& s) {
+    applyBonus(Stats{
+        s.strength - getStats().strength,
+        s.dexterity - getStats().dexterity,
+        s.intelligence - getStats().intelligence,
+        s.defence - getStats().defence
+    });
 }
 void Player::useMagic() {
     if (!magic) {

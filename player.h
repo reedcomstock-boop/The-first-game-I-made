@@ -49,6 +49,7 @@ public:
     double getExpToNextLevel();
     void setExp(double exp);
 
+    void setStats(const Stats& s);
 
     Tool* craftItem(const std::string& name, const std::string& description, double level, const Stats& stats, double health, double energy);
 

@@ -33,7 +33,9 @@ private:
     bool cmdTalk(const std::string& npcName);
     bool cmdLook() const;
     bool cmdMe() const;
- 
+    bool cmdLoad(const std::string&filename);
+    bool cmdSave(const std::string&filename);
+    bool cmdCraft(const std::string& itemName);
     void checkWorldProgression();
 };
 #endif // GAMELOOP_H

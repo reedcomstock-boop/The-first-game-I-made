@@ -129,9 +129,11 @@ void World::createWorldLvlTwo() {
     if (shed){
         shed->setDescription("You walk in to see a small workshop with a couple of workbenches. "
             "There are a few tools and scrapped materials scattered around the room.");
-        if (shed) shed->addNpcEntity(newt);
+        if (shed){ 
+            shed->addNpcEntity(newt);
+            campGround->removeNpcEntity(newt);
+        }
     }
-
 
     // Spawn extra crafting materials around the world
     Item* leather = new Item("Leather", "A scrap of leather. Can be used in crafting.");

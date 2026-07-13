@@ -1,5 +1,6 @@
 #include "GameLoop.h"
 #include "updater.h"
+#include "save.h"
 #include "world.h"
 #include <iostream>
 #include <sstream>
@@ -37,16 +38,19 @@ void GameLoop::run() {
         bool success = true;
 
         if      (verb == "go")        success = cmdGo(toLower(arg));
-        else if (verb == "pickup")    success = cmdPickup(arg);
-        else if (verb == "drop")      success = cmdDrop(arg);
+        else if (verb == "pickup")    success = cmdPickup(toLower(arg));
+        else if (verb == "drop")      success = cmdDrop(toLower(arg));
+        else if (verb == "craft")     success = cmdCraft(toLower(arg));
         else if (verb == "inventory") success = cmdInventory();
-        else if (verb == "equip")     success = cmdEquip(arg);
-        else if (verb == "unequip")   success = cmdUnequip(arg);
-        else if (verb == "attack")    success = cmdAttack(arg);
+        else if (verb == "equip")     success = cmdEquip(toLower(arg));
+        else if (verb == "unequip")   success = cmdUnequip(toLower(arg));
+        else if (verb == "attack")    success = cmdAttack(toLower(arg));
         else if (verb == "look")      { cmdLook(); }
+        else if (verb == "save")      success = cmdSave(arg.empty() ? "save.json" : arg);
+        else if (verb == "load")      success = cmdLoad(arg.empty() ? "save.json" : arg);
         else if (verb == "magic")     success = cmdUseMagic();
-        else if (verb == "talk")      success = cmdTalk(arg);
-        else if (verb == "use")       success = cmdUseTool(arg);
+        else if (verb == "talk")      success = cmdTalk(toLower(arg));
+        else if (verb == "use")       success = cmdUseTool(toLower(arg));
         else if (verb == "flee")      { cmdFlee(); }
         else if (verb == "me")        { cmdMe(); }
         else if (verb == "help")      { showHelp(); }
@@ -105,6 +109,8 @@ void GameLoop::showHelp() const {
               << "magic                -- use magic against a monster (if you have it)\n"
               << "me                   -- check your current stats and objective\n"
               << "help                 -- show this list\n"
+              << "save <filename>      -- save your game (default: save.json)\n"
+              << "load <filename>      -- load a saved game (default: save.json)\n"
               << "exit                 -- quit the game\n\n";
 }
 bool GameLoop::cmdGo(const std::string& direction) {
@@ -298,6 +304,54 @@ bool GameLoop::cmdUseMagic() {
     }
     player.useMagic();
     return true;
+}
+bool GameLoop::cmdCraft(const std::string& itemName) {
+    Room* loc = player.getLocation();
+    if (!loc) return false;
+
+    if (!loc->getNpcByName("Newt")) {
+        std::cout << "There's no one here to help you craft anything.\n";
+        return false;
+    }
+
+    Tool* crafted = nullptr;
+
+    if (itemName == "sword" && player.hasItem("metal") && player.hasItem("stick")) {
+        crafted = player.craftItem("Sword",
+            "a sword made of scrap metal and tied together with newts leather",
+            1.0, {10, 15, 5, 5}, 0.0, 0.0);
+        player.removeItem("metal");
+        player.removeItem("stick");
+    }
+    else if (itemName == "spear" && player.hasItem("rock") && player.hasItem("stick")) {
+        crafted = player.craftItem("Spear",
+            "a spear made of a chunk of obsidian and a pole tied together with newts leather",
+            1.0, {15, 10, 3, 8}, 0.0, 0.0);
+        player.removeItem("rock");
+        player.removeItem("stick");
+    }
+    else if (itemName == "armor" && player.hasItem("cloth") && player.hasItem("leather")) {
+        crafted = player.craftItem("Armor",
+            "a suit of armor made of cloth and leather scraps tied together with newts know-how",
+            1.0, {5, 5, 5, 15}, 0.0, 0.0);
+        player.removeItem("cloth");
+        player.removeItem("leather");
+    }
+
+    if (crafted) {
+        player.PickUpItem(crafted);
+        std::cout << "\nYou watch as Newt crafts a " << crafted->getName() << " for you.\n";
+        return true;
+    }
+
+    std::cout << "\nNewt: 'You don't have the materials for that.'\n";
+    return false;
+}
+bool GameLoop::cmdSave(const std::string& filename) {
+    return SaveManager::saveGame(filename, player, world);
+}
+bool GameLoop::cmdLoad(const std::string& filename) {
+    return SaveManager::loadGame(filename, player, world);
 }
 bool GameLoop::cmdMe() const {
     std::cout << "\n--- Status ---\n";
