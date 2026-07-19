@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -pedantic -Werror
+CFLAGS = -Wall -Wextra -pedantic -Werror -std=gnu++17
 
 Game: main.o player.o updater.o NPC.o rooms.o items.o world.o GameLoop.o Save.o
 	g++ -o Game main.o player.o NPC.o rooms.o items.o world.o GameLoop.o updater.o Save.o $(CFLAGS)

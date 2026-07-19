@@ -5,9 +5,9 @@
 
 #include <vector>
 #include <string>
+#include <cstdint>
 #include "rooms.h"
 #include "Entity.h"
-
 class World {
 public:
     World();

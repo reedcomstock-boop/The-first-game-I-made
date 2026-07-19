@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <vector>
 #include <string>
+#include <cstdint>
 #include "stats.h"
 #include "Entity.h"
 #include "rooms.h"

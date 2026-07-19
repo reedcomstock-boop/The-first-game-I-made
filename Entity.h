@@ -1,9 +1,10 @@
 #ifndef ENTITY_H
 #define ENTITY_H
-
 #include <string>
+#include <cstdint>
 #include "stats.h"
 #include "updater.h"
+    
 class Player;
 class Entity {
 public:
